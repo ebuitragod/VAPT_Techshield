@@ -69,20 +69,60 @@ Active hosts discovery:
 ```
 sudo nmap -sn 192.168.57.20/24 -oA host_active
 
-nmap -sn -PS22,80,443 192.168.54.20/24 -oA hosts_tcp_ping
+sudo nmap -sn -PS22,80,443 192.168.57.20/24 -oA hosts_tcp_ping
 
-nmap -sn -PR 192.168.54.20/24 -oA hosts_arp
+sudo nmap -sn -PR 192.168.57.20/24 -oA hosts_arp
 ```
+![hosts-discovery](hosts-discovery.png)
 
-Services
-```
-nmap -sV -sC -p 22,80,135,139,443,445,554,2869,3306,3389,10243 192.168.54.20 -oA service_scan
-```
 
-Running basic vulnerability scripts:
+Services:
+```
+nmap -sV -sC -Pn -p 22,80,135,139,443,445,554,2869,3306,3389,10243 192.168.57.20 -oA service_scan
+```
+![service-scan](service-scan.png)
+
+
+Vulnerability scripts:
 ```
 nmap --script vuln 192.168.57.20
+
+nmap --script vuln 192.168.57.20 -oA vulnerability_scan
+
+nmap --script=smb-vuln* 192.168.57.20 -p 445 -oA smb_vuln_scan
 ```
+
 ![nmap-script-vuln](nmap-script-vuln.png)
+
+![vulnerability-scan](vulnerability-scan.png)
+
+![smb-vuln-scan](smb-vuln-scan.png)
+
+
+```
+sudo nmap -sS -sV -sC -O -p- -T4 --min-rate 1000 \
+    --script="vuln and safe" \
+    -oN full_audit.txt -oX full_audit.xml -oG full_audit.gnmap \
+    192.168.57.20
+```
+
+![full-audit](full-audit.png)
+
+
+```
+python3 -c "
+import xml.etree.ElementTree as ET
+tree = ET.parse('full_audit.xml')
+root = tree.getroot()
+for host in root.findall('host'):
+    ip = host.find('address').get('addr')
+    print(f'Host: {ip}')
+    for port in host.findall('.//port'):
+        if port.find('state').get('state') == 'open':
+            print(f'  Puerto {port.get("portid")}/{port.get("protocol")}')
+"
+```
+![python-script](python-script.png)
+
 
 
