@@ -197,3 +197,8 @@ nmap -Pn --script rpc-grind,msrpc-enum -p 135 192.168.57.20
 
 nmap -Pn --script upnp-info -p 2869,5357 192.168.57.20
 ```
+
+
+## 3. Configure OpenVAS/Greenbone for a credentialed scan against Windows system
+
+>>> metasploit.md
