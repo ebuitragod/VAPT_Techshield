@@ -15,7 +15,6 @@ Creation of the task:
 
 
 
-Resources:
+## Resources:
 >> report by greebone:
-../resources/greenbone-report-vulnerabilities.pdf
-
+greenbone-report-vulnerabilities.pdf

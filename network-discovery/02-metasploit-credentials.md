@@ -120,7 +120,3 @@ migrate 492
 ```
 ![mestasploit-services-1](mestasploit-services-1.png)
 
-
-
-
-
