@@ -53,15 +53,15 @@ sudo nmap -O 192.168.57.20
 
 from where we can see that the Target machine's OS is Windows 7, but also we have the following tcp open ports:
 
-=======
-Port        state       service
-135         open        msrpc
-139         open        netbios-ssn     
-445         open        microsoft-dc
-554         open        rtsp
-2869        open        icslap
-10243       open        unknown
-=======
+
+| Port|        state|       service |
+| ---- | ------ | -------| 
+| 135  |       open  |      msrpc |
+| 139   |      open   |     netbios-ssn |     
+| 445    |     open    |    microsoft-dc |
+| 554     |    open     |   rtsp |
+| 2869     |   open      |  icslap |
+| 10243     |  open       | unknown |
 
 
 Active hosts discovery:
