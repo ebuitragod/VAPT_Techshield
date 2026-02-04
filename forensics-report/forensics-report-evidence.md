@@ -138,17 +138,181 @@ Metadata:
 
 ![deleted-files-file7-report](deleted-files-file7-report.png)
 
+Let's search for jpgs:
+
+![search-jpg](search-jpg.png)
+
+![search-jpg-results](search-jpg-results.png)
+
+After checking on the data that was found, we see the following results:
+
+Occurrences of `jpg` were found with search options `ASCII`:
 
 ```
+1. 451 (*jpg)
+>> C:/archive/file10.tar.gz
+      Cluster: 10672
+      MFT Entry: 38-128-4
+2. 36 (ile8.jpgUX)
+>> C:/archive/file8.zip
+      Cluster: 10810
+      MFT Entry: 39-128-3
+3. 417 (ile8.jpgUX)
+>> C:/archive/file8.zip
+      Cluster: 11464
+      MFT Entry: 39-128-3
+4. 36 (ile9.jpgUX)
+>> C:/archive/file9.boo
+      Cluster: 11466
+      MFT Entry: 40-128-3
+5. 130 (ile9.jpgUX)
+>> C:/archive/file9.boo
+      Cluster: 12040
+      MFT Entry: 40-128-3
 ```
 
+Occurrences of `jpg` were found with search options `Unicode`:
 
 ```
+1: 182 (ile1.jpg)
+>> C://$LogFile
+      Cluster: 2728
+      MFT Entry: 2728
+2. 30 (ile1.jpg)
+>> C://$LogFile
+      Cluster: 2729
+      MFT Entry: 2-128-1
+3. 462 (ile6.jpg)
+>> C://$LogFile
+      Cluster: 2796
+      MFT Entry: 2-128-1
+4. 310 (ile6.jpg)
+>> C://$LogFile
+      Cluster: 2797
+      MFT Entry: 2-128-1
+5. 214 (ile3.jpg)
+>> C://$LogFile
+      Cluster: 2857
+      MFT Entry: 2-128-1
+6. 62 (ile3.jpg)
+>> C://$LogFile
+      Cluster: 2858
+      MFT Entry: 2-128-1
+7. 198 (ile4.jpg)
+>> C://$LogFile 
+      Cluster: 2865
+      MFT Entry: 2-128-1
+8. 46 (ile4.jpg)
+>> C://$LogFile
+      Cluster: 2866
+      MFT Entry: 2-128-1
+9. 134 (ile6.jpg)
+>> C://$LogFile
+      Cluster: 3652
+      MFT Entry: 2-128-1
+10. 414 (ile1.jpg)
+>> C://$MFT
+      Cluster: 6753
+      MFT Entry: 0-128-1
+11. 254 (ile1.jpg)
+>> C://$MFT
+      Cluster: 6757
+      MFT Entry: 0-128-1
+12. 414 (ile6.jpg)
+>> C://$MFT
+      Cluster: 6759
+      MFT Entry: 0-128-1
+13. 254 (ile6.jpg)
+>> C://$MFT
+      Cluster: 6763
+      MFT Entry: 0-128-1
+14. 414 (ile3.jpg)
+>> C://$MFT
+      Cluster: 6765
+      MFT Entry: 0-128-1
+15. 6 (e4.jpg)
+>> C://$MFT
+      Cluster: 6766
+      MFT Entry: 0-128-1
+16. 254 (ile3.jpg)
+>> C://$MFT
+      Cluster: 6769
+      MFT Entry: 0-128-1
+17. 254 (ile4.jpg)
+>> C://$MFT
+      Cluster: 6771
+      MFT Entry: 0-128-1
+18. 240 (ict9.jpg)
+>> C:/misc/file12.doc
+      Cluster: 12583
+      MFT Entry: 43-128-3
+19. 0 (ict9.jpg)
+>> C:/misc/file12.doc
+      Cluster: 12818
+      MFT Entry: 43-128-3
+20. 300 (ile6.jpg)
+>> Inode not found
 ```
 
+This data gives us the idea of looking up on the following directories:
 
 ```
+>> C: /archive/
+>> C://$LogFile
+>> C://$MFT
+>> C:/misc/
 ```
+
+and the following files:
+
+```
+>> ile1.jpg
+>> ile3.jpg
+>> ile4.jpg
+>> ile6.jpg
+>> ile8.jpgUX
+
+>> e4.jpg
+>> ict9.jpg
+
+>> C:/archive/file8.zip
+>> C:/archive/file9.boo
+>> C:/archive/file10.tar.gz
+
+```
+
+This data gave us compressed with hidden images:
+
+```
+1. 451 (*jpg) >> C:/archive/file10.tar.gz
+2. 36 (ile8.jpgUX) >> C:/archive/file8.zip  
+3. 417 (ile8.jpgUX) >> C:/archive/file8.zip
+4. 36 (ile9.jpgUX) >> C:/archive/file9.boo
+5. 130 (ile9.jpgUX) >> C:/archive/file9.boo
+```
+
+Where the attackers are using compressed files (`ZIP`, or `TAR`) to hide images. And the extension `boo` suggests that there is a possible obfuscation. More especifically:
+
+  - `file10.tar.gz`: This containes references to `JPG` files with possible objective files. 
+  - `file8.zip`: Appears in multiple clusters and could contain `file.8.jpg`.
+  - `file9.boo`: Possible intentional obfuscation.
+
+```
+>> C://$LogFile
+- ile1.jpg (clusters 2728-2729)
+- ile6.jpg (clusters 2796-2797)  
+- ile3.jpg (clusters 2857-2858)
+- ile4.jpg (clusters 2865-2866)
+
+>> C://$MFT
+- ile1.jpg (clusters 6753, 6757)
+- ile6.jpg (clusters 6759, 6763)
+- ile3.jpg (clusters 6765, 6769)
+- ile4.jpg (clusters 6771)
+- e4.jpg (cluster 6766)
+```
+ 
+ Where `$LogFile` is the registery file of `NTFS` that shows operations with files. `MTF`: contains metadata of all files. So, the references in `$LogFile`and `$MFT` indicates that those `JPG` existed in the system and were accessed to or modificated. This will help us to rebuild the timeline of these files. 
 
 
 ####  5 valid JPG files recovered.
