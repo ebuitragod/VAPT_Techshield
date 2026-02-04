@@ -56,17 +56,11 @@ autopsy
 ![autopsy-init-1](autopsy-init-1.png)
 
 ```
-forensics
-  case-8-jpeg-search
-    evidence
-    reports
-    screenshots
-
 /home/kali/forensics/
 ├── 8-jpeg-search-forensics/
-│   ├── autopsy.log
-│   ├── config/
-│   └── data/
+│   ├── evidence/
+│   ├── reports/
+│   └── screenshots/
 ``` 
 
 ![case-structure](case-structure.png)
@@ -74,17 +68,88 @@ forensics
 
 ## Autopsy Case Setup 
 
-#### Case created with correct metadata (case name, examiner, etc.).
+#### Case created with correct metadata (case name, description, investigator's name).
 
-
+![case-creation-metadata](case-creation-metadata.png)
 
 #### Forensic image added successfully.
 
+![case-directory-creation](case-directory-creation.png)
+
+#### Add host
+
+![add-host](add-host.png)
+
+![add-host-creation](add-host-creation.png)
+
+#### Add directory
+
+![directory-to-8-jpeg-search](directory-to-8-jpeg-search.png)
+
+We are going to use `8-jpeg-search-forensic-copy.dd`, to preserve the integrity of the original image `8-jpeg-search.dd`.
+
+![add-new-image](add-new-image.png)
+
 #### Same hash verified in Autopsy.
+
+We should have the same hash that we already calculated before: `9bdb9c76b80e90d155806a1fc7846db5`.
+
+![calculated-MD5-in-Autopsy](calculated-MD5-in-Autopsy.png)
 
 ## Evidence Recovery
 
+Analysing the image:
+
+![analysis-image](analysis-image.png)
+
+Analyisis succeded:
+
+![analysis-image-1](analysis-image-1.png)
+
 #### Search for hidden JPG files performed correctly and discovered.
+
+In deleted files: 
+
+```
+All deleted files
+>> file6.jpg
+>> file7.hmm
+```
+
+![deleted-files](deleted-files.png)
+
+```
+>> - /r C:/del1/file6.jpg
+```
+
+![deleted-files-file6](deleted-files-file6.png)
+
+Metadata: 
+
+![deleted-files-file6-report](deleted-files-file6-report.png)
+
+```
+>> - /r C:/del1/file7.hmm
+```
+
+![deleted-files-file7](deleted-files-file7.png)
+
+Metadata:
+
+![deleted-files-file7-report](deleted-files-file7-report.png)
+
+
+```
+```
+
+
+```
+```
+
+
+```
+```
+
 
 ####  5 valid JPG files recovered.
 
