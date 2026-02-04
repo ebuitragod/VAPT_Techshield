@@ -118,21 +118,6 @@ crackmapexec smb $TARGET -u $USER -p $PASS
 ```
 ![Victim's-admin-in-crackmapexec](Victim's-admin-in-crackmapexec.png)
 
-### Evidence captured
-
-```
-# Capturar screenshot del éxito
-echo "=== EVIDENCIA CAPTURADA ==="
-echo "1. Resultados de Hydra:"
-cat hydra_smb_results.txt 2>/dev/null || echo "No results yet"
-
-echo -e "\n2. Información del sistema (desde Meterpreter):"
-echo "Computer: WIN-7PC9ABC123"
-echo "OS: Windows 7 (6.1 Build 7601, Service Pack 1)"
-echo "Compromised Users: Administrator:Password123"
-```
-
-
 
 # Bonus:
 
