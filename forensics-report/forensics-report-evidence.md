@@ -108,7 +108,7 @@ Analyisis succeded:
 
 #### Search for hidden JPG files performed correctly and discovered.
 
-In deleted files: 
+#### Extraction in deleted files
 
 ```
 All deleted files
@@ -137,6 +137,9 @@ Metadata:
 Metadata:
 
 ![deleted-files-file7-report](deleted-files-file7-report.png)
+
+
+#### Searching files
 
 Let's search for jpgs:
 
@@ -342,12 +345,12 @@ So,
 
 Possibly existed in the system, but we already found `file6.jpg` in deleted files. We need to look for the others. 
 
-#### Extractionn of compressed files
+#### Extractionn of compressed files in `C://archive/`
 
 ```
 >> C://archive/
  - file8.zip
- - file9.boo (renombrar a file9.zip si es necesario)
+ - file9.boo
  - file10.tar.gz
 ```
 
@@ -371,27 +374,73 @@ Possibly existed in the system, but we already found `file6.jpg` in deleted file
 
 ![archive-files-file10](archive-files-file10.png)
 
-```
-```
+#### Extractionn of compressed files in `C://alloc/`
 
 ```
+>> C://alloc/
+ - file1.jpg
+ - file2.dat
 ```
 
-####  5 valid JPG files recovered.
+![alloc-files](alloc-files.png)
 
-#### Screenshots included.
+```
+>> C://alloc/file1.jpg
+```
 
-## Analysis & Documentation 
+![alloc-files-file1](alloc-files-file1.png)
 
-#### Findings explain the significance of recovered evidence.
+```
+>> C://alloc/file2.dat
+```
 
-#### Notes investigative relevance (Ex: hidden images implying attempt to conceal evidence).
+![alloc-files-file2](alloc-files-file2.png)
+
+#### Extractionn of compressed files in `C://misc/`
 
 
-## Final Report & Presentation Deck 
+```
+>> C://misc/
+ - file12.doc
+ - file13.dll:here
+```
 
-#### VAPT report completed and submitted, aligning with VAPT template.
+![misc-files](misc-files.png)
 
-#### Presentation deck created (10–12 slides).
+```
+>> C://misc/file13.dll:here
+```
+
+![misc-files-file13](misc-files-file13.png)
+
+#### Extractionn of compressed files in `C://invalid/`
+
+```
+>> C://invalid/
+  - file3.jpg
+  - file4.jpg
+  - file5.rtf
+```
+
+![invalid-files](invalid-files.png)
+
+```
+>> C://invalid/file3.jpg
+```
+
+![invalid-file-file3](invalid-file-file3.png)
+
+```
+>> C://invalid/file4.jpg
+```
+
+![invalid-file-file4](invalid-file-file4.png)
+
+```
+>> C://invalid/file5.rtf
+```
+
+![invalid-file-file5](invalid-file-file5.png)
+
 
 
