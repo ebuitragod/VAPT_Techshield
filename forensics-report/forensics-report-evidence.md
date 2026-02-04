@@ -443,4 +443,93 @@ Possibly existed in the system, but we already found `file6.jpg` in deleted file
 ![invalid-file-file5](invalid-file-file5.png)
 
 
+#### JPG files recovered.
+
+![JPG-files-recovered](JPG-files-recovered.png)
+
+All the `ASCII` and `Hex` reports may be found in the folder `8-jpeg-search` folder:
+
+![image-reports](image-reports.png)
+
+```
+8-jpeg-search/
+├── 8-jpeg-search.dd
+├── 8-jpeg-search-forensic-copy.dd
+├── COPYING-GNU.txt
+├── evidence_md5_hash_copy.txt
+├── evidence_md5_hash.txt
+└── forensics/
+    └── 8-jpeg-search-forensics/
+        ├── evidence/
+        │   ├── file0.jpg
+        │   ├── file8.jpg
+        │   ├── file9.jpg
+        │   ├── vol1-C..alloc.file1.jpg
+        │   ├── vol1-C..alloc.file2.dat
+        │   ├── vol1-C..del1.file6.jpg
+        │   └── vol1-C..del2.file7.hmm
+        └── reports/
+            ├── file1/
+            │   ├── ASCII-filename=vol1-C..alloc.file1.jpg.txt
+            │   ├── Hex-filename=vol1-C..alloc.file1.jpg.txt
+            │   ├── vol1-C..archive.file1.jpg
+            │   └── vol1-meta29-128-3.raw
+            ├── file10/
+            │   ├── ASCII-filename=vol1-C..archive.file10.tar.gz.txt
+            │   ├── file10.jpg
+            │   ├── Hex-filename=vol1-C..archive.file10.tar.gz.txt
+            │   └── vol1-C..archive.file10.tar.gz
+            ├── files/
+            │   ├── ASCII-filename=vol1-C..misc.file13.dll.here.txt
+            │   ├── Hex-filename=vol1-C..misc.file13.dll.here.txt
+            │   └── vol1-meta44-128-5.raw
+            ├── file2/
+            │   ├── ASCII-filename=vol1-C..alloc.file2.dat.txt
+            │   ├── Hex-filename=vol1-C..alloc.file2.dat.txt
+            │   ├── vol1-C..alloc.file2.dat
+            │   └── vol1-meta28-128-3.raw
+            ├── files/
+            │   ├── ASCII-filename=vol1-C..invalid.file3.jpg.txt
+            │   ├── Hex-filename=vol1-C..invalid.file3.jpg.txt
+            │   └── vol1-meta35-128-3.raw
+            ├── file6/
+            │   ├── ASCII-filename=vol1-C..invalid.file5.trf.txt
+            │   ├── Hex-filename=vol1-C..invalid.file5.trf.txt
+            │   └── vol1-meta34-128-3.raw
+            ├── file6/
+            │   ├── ASCII-filename=vol1-C..vol1-meta-32-128-3.txt
+            │   ├── Hex-filename=vol1-C..vol1-meta-32-128-3.txt
+            │   ├── vol1-C..del1.file6.jpg
+            │   └── vol1-meta32-128-3.raw
+            ├── file7/
+            │   ├── ASCII-filename=vol1-C..del2.file7.hmm.txt
+            │   ├── Hex-filename=vol1-C..del2.file7.hmm.txt
+            │   ├── vol1-C..del2.file7.hmm
+            │   └── vol1-meta31-128-3.raw
+            ├── files/
+            │   ├── ASCII-filename=vol1-C..archive.file8.zip.txt
+            │   ├── Hex-filename=vol1-C..archive.file8.zip.txt
+            │   └── vol1-C..archive.file8.zip
+            └── file9/
+                ├── ASCII-filename=vol1-C..archive.file9.b00.txt
+                ├── Hex-filename=vol1-C..archive.file9.b00.txt
+                └── vol1-C..archive.file9.b00
+```
+
+#### Findings Summary:
+
+| Files | Origina location | State |
+|--------|----------------|------------|
+| `file1.jpg` | `C:\alloc\` | Recovered from assigned space | 
+| `file2.dat` | `C:\alloc\` | Recovered (extension `dat`) - possible `jpg` renamed|
+| `file3.jpg` | `C:\invalid\` | Marked as "invalid" - damaged/corrupted format|
+| `file4.jpg`| Not found | Unexistent, overwritten or obfuscated file|
+| `file5.trf` | `C:\invalid\` | Extension `.trf` - unknown format |
+| `file6.jpg` | `C:\del1\` | Recovered from deleted space|
+| `file7.hmm` | `C:\del2\` | Recovered (extension`hmm`) - unknown format |
+| `file8.zip` | `C:\archive\` | Contains `file8.jpg` |
+| `file9.boo` | `C:\archive\` | Contains `file9.jpg` (obfuscated extension) |
+| `file10.tar.gz` | `C:\archive\` | Contains `file10.jpg` |
+| `file13.dll.here` | `C:\misc\` | Suspicious `dll` file - suspicious executable file|
+
 
