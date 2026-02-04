@@ -21,9 +21,62 @@
 
 ####  MD5sum correctly run, hash saved to a file.
 
+``` 
+md5sum 8-jpeg-search.dd
+
+# Save hash to evidence file
+md5sum 8-jpeg-search.dd > evidence_md5_hash.txt
+
+# Verify against expected value
+EXPECTED="9bdb9c76b80e90d155806a1fc7846db5"
+```
+
+![md5sum-8-jpg](md5sum-8-jpg.png)
+
+```
+cp 8-jpeg-search.dd 8-jpeg-search-forensic-copy.dd
+
+# Verify copy integrity
+md5sum 8-jpeg-search_forensic_copy.dd > copy_md5_hash.txt
+
+```
+
+![md5-sum-verifation-integrity](md5-sum-verifation-integrity.png)
+
+``` 
+diff 8-jpeg-search.dd otro 8-jpeg-search_forensic_copy.dd
+```
+
+```
+autopsy
+```
+
+![autopsy-init](autopsy-init.png)
+
+![autopsy-init-1](autopsy-init-1.png)
+
+```
+forensics
+  case-8-jpeg-search
+    evidence
+    reports
+    screenshots
+
+/home/kali/forensics/
+├── 8-jpeg-search-forensics/
+│   ├── autopsy.log
+│   ├── config/
+│   └── data/
+``` 
+
+![case-structure](case-structure.png)
+
+
 ## Autopsy Case Setup 
 
 #### Case created with correct metadata (case name, examiner, etc.).
+
+
 
 #### Forensic image added successfully.
 
