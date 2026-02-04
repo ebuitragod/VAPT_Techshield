@@ -312,8 +312,70 @@ Where the attackers are using compressed files (`ZIP`, or `TAR`) to hide images.
 - e4.jpg (cluster 6766)
 ```
  
- Where `$LogFile` is the registery file of `NTFS` that shows operations with files. `MTF`: contains metadata of all files. So, the references in `$LogFile`and `$MFT` indicates that those `JPG` existed in the system and were accessed to or modificated. This will help us to rebuild the timeline of these files. 
+Where `$LogFile` is the registery file of `NTFS` that shows operations with files. `MTF`: contains metadata of all files. So, the references in `$LogFile`and `$MFT` indicates that those `JPG` existed in the system and were accessed to or modificated. This will help us to rebuild the timeline of these files. 
 
+Also, 
+
+```
+18. 240 (ict9.jpg) >> C:/misc/file12.doc
+19. 0 (ict9.jpg) >> C:/misc/file12.doc
+```
+
+indicates that `file12.doc` is a Word document that contains references to `file9.jpg`, this could indicate that it has malicious documents with macros that downloads/opens images. 
+
+Finally, the reference
+
+```
+20. 300 (ile6.jpg) >> Inode not found
+```
+
+Could indicate that the file was deleted, or overwitten, or the file system is corrupted.
+
+So, 
+  - `file1.jpg` >> references in `$LogFile` and `$MFT`. 
+  - `file3.jpg` >> references in `$LogFile` and `$MFT`. 
+  - `file4.jpg` >> references in `$LogFile` and `$MFT`. 
+  - `file6.jpg` >> references in `$LogFile` and `$MFT`. 
+  - `file8.jpg` >> contained in `file8.zip` and `$MFT`. 
+  - `file9.jpg` >> references in `file12.doc`, and contained in `file9.boo`. 
+  - `file10.jpg` >> possibly contained in `file10.tar.gz`. 
+
+Possibly existed in the system, but we already found `file6.jpg` in deleted files. We need to look for the others. 
+
+#### Extractionn of compressed files
+
+```
+>> C://archive/
+ - file8.zip
+ - file9.boo (renombrar a file9.zip si es necesario)
+ - file10.tar.gz
+```
+
+![archive-files](archive-files.png)
+
+```
+>> C://archive/file8.zip
+```
+
+![archive-files-file8](archive-files-file8.png)
+
+```
+>> C://archive/file9.boo
+```
+
+![archive-files-file9](archive-files-file9.png)
+
+```
+>> C://archive/file10.tar.gz
+```
+
+![archive-files-file10](archive-files-file10.png)
+
+```
+```
+
+```
+```
 
 ####  5 valid JPG files recovered.
 
