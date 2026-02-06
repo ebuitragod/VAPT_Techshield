@@ -1,0 +1,76 @@
+JPEG Search Test #1
+
+Tool: 
+Version: 
+
+
+1.  What search procedure(s) were used to obtain the following
+results?
+
+
+The following apply to the results from running an automated search
+tool for JPEG pictures.  If more than one procedure was used to
+find the images, please note the procedure that was used to find
+each.  Note that this was not designed to test data carving tools.
+
+
+2. Did the search results include the alloc\file1.jpg picture?  
+
+
+3. Did the search results include the alloc\file2.dat picture?  If
+not, then is it documented that JPEGs are found using only the
+extension?
+
+
+4. Did the search results include the invalid\file3.jpg file?
+
+
+5. Did the search results include the invalid\file4.jpg file?
+
+
+6. Did the search results include the invalid\file5.rtf file?
+
+
+7. Did the search results include the deleted picture in MFT entry
+#32 (del1/file6.jpg)?  If not, then is it documented that only
+allocated JPEGs will be found?
+
+
+8. Did the search results include the deleted picture in MFT entry
+#31 (del2/file7.hmm)?  If this file was not found, but the file in
+step #7 was found, then is it documented that only JPEGs with a
+proper extension will be found?
+
+
+9. Did the search results include the picture inside of archive\file8.zip?
+If not, then is it documented that JPEG files will be found and
+that JPEG images that are embedded inside other file types will
+not?
+
+
+10. Did the search results include the picture inside of
+archive\file9.boo?  If not, then is it documented that JPEG files
+will be found and that JPEG images that are embedded inside other
+file types will not?
+
+
+11. Did the search results include the picture inside of
+archive\file10.tar.gz?  If not, then is it documented that JPEG
+files will be found and that JPEG images that are embedded inside
+other file types will not?
+
+
+12. Did the search results include the misc\file11.dat file?  If
+not, then is it documented that JPEG files will be found and that
+JPEG images that are embedded inside other file types will not?
+
+
+13. Did the search results include the misc\file12.doc file?  If
+not, then is it documented that JPEG files will be found and that
+JPEG images that are embedded inside other file types will not?
+
+
+14. Did the search results include the misc\file13.dll:here picture?
+If not, then is it documented that pictures in alternate data streams
+will not be found?
+

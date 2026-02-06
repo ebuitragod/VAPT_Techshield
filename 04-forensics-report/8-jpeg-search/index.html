@@ -1,0 +1,212 @@
+<html>
+<head>
+  <title>JPEG Search Test #1</title>
+</head>
+
+
+<body bgcolor="#FFFFCC">
+<center>
+  <h2>JPEG Search Test #1</h2>
+
+  <h3>Digital Forensics Tool Testing Image (#8)</h3>
+
+  <a href="http://dftt.sourceforge.net">
+  http://dftt.sourceforge.net</a>
+
+</center>
+
+
+<h3>Introduction</h3>
+<p>
+This test image is an NTFS file system with 10 JPEG pictures in it.
+The pictures include files with incorrect extensions, pictures
+embedded in zip and Word files, and alternate data streams.   The
+goal of this test image is to test the capabilities of automated tools
+that search for JPEG images.
+
+
+<h3>Download</h3>
+<p>
+This test image is a 'raw' partition image (i.e. 'dd') of a NTFS 
+file system.  The file system is 10MB and is compressed to 2 MB.
+The MD5 of the image is
+<tt>9bdb9c76b80e90d155806a1fc7846db5</tt>.  This image is released
+under the <a href="http://www.gnu.org/licenses/licenses.html#GPL">
+GPL</a>, so anyone can use it.
+
+<ul>
+  <li><a href="http://prdownloads.sourceforge.net/dftt/8-jpeg-search.zip?download">zip</a>
+</ul>
+
+
+<h3>Files</h3>
+<p>
+These are the files that may be found, their MD5 hashes, and a note
+about their function in the test.  (<a href="./results.txt">Fill
+in the blank results form</a>)
+
+<p>
+<table width=100% border=1>
+<tr>
+  <th>Num</th><th>Name</th><th>MD5</th><th>Note</th>
+</tr>
+
+
+
+<tr>
+  <td>1</td><td><tt>alloc\file1.jpg</tt></td><td><tt>75b8d00568815a36c3809b46fc84ba6d</tt></td><td>A JPEG file with a JPEG extension</td>
+</tr>
+
+<tr>
+  <td>2</td><td><tt>alloc\file2.dat</tt></td><td><tt>de5d83153339931371719f4e5c924eba</tt></td><td>A JPEG file with a non-JPEG extension</td>
+</tr>
+
+<tr>
+  <td>3</td>
+  <td><tt>invalid\file3.jpg</tt></td>
+  <td><tt>1ba4e91591f0541eda255ee26f7533bc</tt></td>
+  <td>A random file with a JPEG extension</td>
+</tr>
+
+<tr>
+  <td>4</td>
+  <td><tt>invalid\file4.jpg</tt></td>
+  <td><tt>c8de721102617158e8492121bdad3711</tt></td>
+  <td>A random file with 0xffd8 as the first two bytes (the JPEG 
+    header signature).  There is no JPEG footer or other header data.</td>
+</tr>
+
+<tr>
+  <td>5</td>
+  <td><tt>invalid\file5.rtf</tt></td>
+  <td><tt>86f14fc525648c39d878829f288c0543</tt></td>
+  <td>A random file with the 0xffd8 signature value in several locations inside of the file.</td>
+</tr>
+
+<tr>
+  <td>6</td>
+  <td><tt>del1\file6.jpg</tt> - MFT Entry #32</td>
+  <td><tt>afd55222024a4e22f7f5a3a665320763</tt></td>
+  <td>A deleted JPEG file with a JPEG extension.</td>
+</tr>
+
+<tr>
+  <td>7</td>
+  <td><tt>del2\file7.hmm</tt> - MFT Entry #31</td>
+  <td><tt>0c452c5800fcfa7c66027ae89c4f068a</tt></td>
+  <td>A deleted JPEG file with a non-JPEG extension.</td>
+</tr>
+
+<tr>
+  <td>8</td>
+  <td><tt>archive\file8.zip</tt></td>
+  <td><tt>d41b56e0a9f84eb2825e73c24cedd963</tt></td>
+  <td>A ZIP file with a ZIP extension and a JPEG picture named <tt>file8.jpg</tt> inside of it.</td>
+</tr>
+
+<tr>
+  <td>&nbsp;</td>
+  <td><tt>file8.jpg</tt></td>
+  <td><tt>f9956284a89156ef6967b49eced9d1b1</tt></td>
+  <td>A JPEG file that is inside of a ZIP file with a ZIP extension.</td>
+</tr>
+
+<tr>
+  <td>9</td>
+  <td><tt>archive\file9.boo</tt></td>
+  <td><tt>73c3029066aee9416a5aeb98a5c55321</tt></td>
+  <td>A ZIP file with a non-ZIP extension and a JPEG picture named <tt>file9.jpg</tt> inside of it.</td>
+</tr>
+
+<tr>
+  <td>&nbsp;</td>
+  <td><tt>file9.jpg</tt></td>
+  <td><tt>c5a6917669c77d20f30ecb39d389eb7d</tt></td>
+  <td>A JPEG file that is inside of a ZIP file with a non-ZIP extension.</td>
+</tr>
+
+<tr>
+  <td>10</td>
+  <td><tt>archive\file10.tar.gz</tt></td>
+  <td><tt>d4f8cf643141f0c2911c539750e18ef2</tt></td>
+  <td>A gzipped tar file that contains a JPEG picture named <tt>file10.jpg</tt> .</td>
+</tr>
+
+<tr>
+  <td>&nbsp</td>
+  <td><tt>file10.jpg</tt></td>
+  <td><tt>c476a66ccdc2796b4f6f8e27273dd788</tt></td>
+  <td>A JPEG file that is inside of a gzipped tar file.</td>
+</tr>
+
+<tr>
+  <td>11</td>
+  <td><tt>misc\file11.dat</tt></td>
+  <td><tt>f407ab92da959c7ab03292cfe596a99d </tt></td>
+  <td>A file with 1572 bytes of random data and then a JPEG picture.  This was created using the '+' option in the Windows copy.exe tool.</td>
+</tr>
+
+<tr>
+  <td>12</td>
+  <td><tt>misc\file12.doc</tt></td>
+  <td><tt>61c0b55639e52d1ce82aba834ada2bab</tt></td>
+  <td>A Word document with the JPEG picture inside of it.</td>
+</tr>
+
+<tr>
+  <td>13</td>
+  <td><tt>misc\file13.dll:here</tt></td>
+  <td><tt>9b787e63e3b64562730c5aecaab1e1f8</tt></td>
+  <td>A JPEG file in an ADS.</td>
+</tr>
+
+</table>
+
+
+<p>
+Tests 8, 9, 10, 11, and 12 may not be included in the expected
+behavior of an application.  The documentation of the tool should
+identify if embedded pictures will be found.
+
+
+<h3>Author</h3>
+Brian Carrier (carrier at cerias.purdue.edu) created the test cases
+and the test image.  This test was released on June 10, 2004.
+
+
+<h3>Disclaimers</h3>
+<p>
+These tests are not a complete test suite.  These were some of the
+first ones that I thought of and little formal theory was put into
+their design.
+
+
+<p>
+Passing these tests provides no guarantees about a tool.  Always
+use additional test cases (and email them to me so we can all
+benefit!).
+
+
+<p>
+<hr>
+<table width="100%" border=0>
+<tr width="100%">
+  <td width="33%" align=left>
+    <font size="1">Copyright &copy 2004 by Brian Carrier<br>
+    Email: carrier at users dot sf dot net</font>
+  </td>
+  <td width="33%" align="center">
+<a href='http://sourceforge.net'>
+    <img src='http://sourceforge.net/sflogo.php?group_id=105411&amp;type=2'
+    width=80  border=0 alt='SourceForge Logo'>
+</a>
+  </td>
+  <td width="33%" align=right>
+    <font size="1">Last Updated: June 10, 2004</font>
+  </td>
+</tr>
+</table>
+
+
+</body>
+</html>
